@@ -17,8 +17,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,7 +32,15 @@ import org.jsoup.select.Elements;
 public class kinoBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
-        return "6220070778:AAErty3HDHCqmb3NbMVHT1IhE0eRT4u1GIM";
+        String token = "";
+        try (InputStream input = Files.newInputStream(Paths.get("src/main/resources/telegram.properties"))) {
+            Properties properties = new Properties();
+            properties.load(input);
+            token = properties.getProperty("botToken");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return token;
     }
 
 //    public void onUpdateReceived(Update update) {
